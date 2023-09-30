@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class ОтзывыConfig(AppConfig):
+class reviewsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'отзывы'
+    name = 'reviews'
