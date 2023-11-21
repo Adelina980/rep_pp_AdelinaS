@@ -1,13 +1,13 @@
 from django.contrib import admin
-from reviews.models import (Publisher, Contributor, Book, BookContributor, Review)
+from reviews.models import (Publisher, Contributor, Book,
+        BookContributor, Review)
 
 
 class BookAdmin(admin.ModelAdmin):
     date_hierarchy = 'publication_date'
-    list_display = ('title', 'isbn')
-    list_filter = ('publisher__name', 'publication_date')
+    list_display = ('title', 'isbn13')
+    list_filter = ('publisher', 'publication_date')
     search_fields = ('title', 'isbn', 'publisher__name')
-
     @admin.display(
         ordering='isbn',
         description='ISBN-13',
@@ -21,6 +21,8 @@ class BookAdmin(admin.ModelAdmin):
 
 
 def initialled_name(obj):
+    """ obj.first_names='Jerome David', obj.last_names='Salinger'
+        => 'Salinger, JD' """
     initials = ''.join([name[0] for name in obj.first_names.split(' ')])
     return "{}, {}".format(obj.last_names, initials)
 
@@ -37,8 +39,9 @@ class ReviewAdmin(admin.ModelAdmin):
                   {'fields': ('content', 'rating')}))
 
 
-admin.site.register(Book, BookAdmin)
+
 admin.site.register(Publisher)
-admin.site.register(Contributor)
+admin.site.register(Contributor, ContributorAdmin)
+admin.site.register(Book, BookAdmin)
 admin.site.register(BookContributor)
-admin.site.register(Review)
+admin.site.register(Review, ReviewAdmin)
